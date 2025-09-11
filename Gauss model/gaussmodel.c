@@ -14,11 +14,14 @@ int main(){
     double x[] = {86.0, 85.0, 84.0, 89.0, 85.0, 89.0, 87.0, 85.0, 82.0, 85.0};
     int len = sizeof(x) / sizeof(x[0]);
     double *gauss = Gaussfn(x, len); //uses pointers as necessary
+    double check = 0.0;
 
     printf("Mean value: %lf\n", mean(x, len));
     printf("Standard sample deviation: %lf\n", stddev(x, len));
     printf("Standard mean deviation: %lf\n\n", meanstddev(x,len));
     for(int i=0; i<len; i++) printf("Gaussian theoretichal value: %lf\n", gauss[i]);
+    for(int i=0; i<len; i++) check += gauss[i];
+    printf("Normalization check: %lf\n", check);    
     free(gauss); //free the allocated memory to avoid memory leaks
 
     return 0;
@@ -59,7 +62,7 @@ double *Gaussfn(double x[], int len){
     double meanvalue = mean(x,len);
     double normfactor = 1 / (deviation * sqrt(2*M_PI));
     for(int i=0;i<len;i++){
-        Gauss[i] = normfactor * exp( - pow(meanvalue - x[i], 2) / 2*pow(deviation,2) );
+        Gauss[i] = normfactor * exp( - pow(meanvalue - x[i], 2) / (2 * pow(deviation, 2)) );
     }
     return Gauss;
 }
