@@ -4,6 +4,7 @@
 //Function prototypes
 double mean(double x[], int len);
 double stddev(double x[], int len);
+double meanstddev(double x[], int len);
 
 int main(){
     printf("Test\n");
@@ -11,7 +12,8 @@ int main(){
     int len = sizeof(x)/sizeof(x[0]);
 
     printf("Mean value: %lf\n", mean(x, len));
-    printf("Standard sample deviation: %lf", stddev(x, len));
+    printf("Standard sample deviation: %lf\n", stddev(x, len));
+    printf("Standard mean deviation: %lf\n", meanstddev(x,len));
 
     return 0;
 }
@@ -33,4 +35,8 @@ double stddev(double x[], int len){
         stddev += pow(meanvalue- x[i], 2);
     }
     return sqrt(stddev/(len-1));
+}
+
+double meanstddev(double x[], int len){
+    return stddev(x,len)/sqrt(len);
 }
