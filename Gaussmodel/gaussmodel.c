@@ -15,7 +15,7 @@ DataArray * createArray(int len){
     return x;
 }
 //Optimized free-fucntion for the whole structure
-void freeArray(DataArray *dataArray) {
+void freeArray(DataArray *dataArray){
     if (dataArray == NULL) return;
     free(dataArray->data);
     dataArray->data = NULL;
