@@ -14,7 +14,7 @@ DataArray * createArray(int len){
     x->data = malloc(sizeof(double) * len);
     return x;
 }
-//Optimized free fucntion for the whole structure
+//Optimized free-fucntion for the whole structure
 void freeArray(DataArray *dataArray) {
     if (dataArray == NULL) return;
     free(dataArray->data);
