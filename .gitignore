@@ -1,2 +1,2 @@
 #Specific .gitignore for this repositories
-./Gaussmodel/gaussmodel
+./*/gaussmodel
