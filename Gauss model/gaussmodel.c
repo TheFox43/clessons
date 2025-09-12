@@ -6,48 +6,54 @@
 typedef struct{
     int length;
     double *data;
-} Data;
+} DataArray;
 //Allocating memory with its length parameter
-Data createArray(int len){
-    Data x;
-    x.length = len;
-    x.data = malloc(sizeof(double) * len);
+DataArray * createArray(int len){
+    DataArray * x = malloc(sizeof(DataArray));
+    x->length = len;
+    x->data = malloc(sizeof(double) * len);
     return x;
 }
-//Optimized free fucntion
-void freeArray(Data *dataArray) {
+//Optimized free fucntion for the whole structure
+void freeArray(DataArray *dataArray) {
+    if (dataArray == NULL) return;
     free(dataArray->data);
-    dataArray->data = NULL;  //For dangling pointer
+    dataArray->data = NULL;
     dataArray->length = 0;
+    free(dataArray);
 }
 
 //Function prototypes
-double mean(const Data x);
-double stddev(const Data x);
-double meanstddev(const Data x);
-double * Gaussfn(const Data x);
+double mean(const DataArray x);
+double stddev(const DataArray x);
+double meanstddev(const DataArray x);
+DataArray * Gaussfn(const DataArray x);
 
 int main(){
     printf("Test\n");
-    double x[] = {86.0, 85.0, 84.0, 89.0, 85.0, 89.0, 87.0, 85.0, 82.0, 85.0};
-    int len = sizeof(x) / sizeof(x[0]);
-    Data * gauss = Gaussfn(x); //uses pointers as necessary
+    double values[] = {86.0, 85.0, 84.0, 89.0, 85.0, 89.0, 87.0, 85.0, 82.0, 85.0};
+    int len = sizeof(values) / sizeof(values[0]);
+    DataArray * x = createArray(len);
+    for(int i=0; i<x->length; i++) x->data[i] = values[i];
+    DataArray * gauss = Gaussfn(*x);
     double check = 0.0;
     
-    printf("Mean value: %lf\n", mean(test));
-    printf("Standard sample deviation: %lf\n", stddev(x));
-    printf("Standard mean deviation: %lf\n\n", meanstddev(x));
-    for(int i=0; i<len; i++) printf("Gaussian theoretichal value: %lf\n", gauss[i]);
-    for(int i=0; i<len; i++) check += gauss[i];
+    printf("Mean value: %lf\n", mean(*x));
+    printf("Standard sample deviation: %lf\n", stddev(*x));
+    printf("Standard mean deviation: %lf\n\n", meanstddev(*x));
+    for(int i=0; i<gauss->length; i++){
+        printf("Gaussian theoretichal value: %lf\n", gauss->data[i]);
+    }
+    for(int i=0; i<gauss->length; i++) check += gauss->data[i];
     printf("Normalization check: %lf\n", check);
-    free(gauss); //free the allocated memory to avoid memory leaks
-    freeArray(&test);
+    freeArray(x);
+    freeArray(gauss);
 
     return 0;
 }
 
 //Mean value
-double mean(const Data x){
+double mean(const DataArray x){
     double mean = 0.0;
     for(int i=0; i<x.length; i++){
         mean += x.data[i];
@@ -56,7 +62,7 @@ double mean(const Data x){
 }
 
 //Standard sample deviation
-double stddev(const Data x){
+double stddev(const DataArray x){
     double meanvalue = mean(x);
     double stddev = 0.0;
     for(int i=0; i<x.length; i++){
@@ -66,14 +72,14 @@ double stddev(const Data x){
 }
 
 //Mean standard deviation
-double meanstddev(const Data x){
+double meanstddev(const DataArray x){
     return stddev(x)/sqrt(x.length);
 }
 
 //Gaussian function using pointers
-Data * Gaussfn(const Data x){
-    Data * Gauss = createArray(x.length);
-    if(Gauss == NULL){
+DataArray * Gaussfn(const DataArray x){
+    DataArray * GaussValues = createArray(x.length);
+    if(GaussValues == NULL){
         printf("Memory allocation failed\n");
         exit(1);
     }
@@ -82,7 +88,7 @@ Data * Gaussfn(const Data x){
     double normfactor = 1.0 / (deviation * sqrt(2*M_PI));
     double deNum = 2 * deviation * deviation;
     for(int i=0; i<x.length; i++){
-        Gauss.data[i] = normfactor * exp( - pow(meanvalue - x.data[i], 2) / deNum );
+        GaussValues->data[i] = normfactor * exp( - pow(meanvalue - x.data[i], 2) / deNum );
     }
-    return Gauss;
+    return GaussValues;
 }
