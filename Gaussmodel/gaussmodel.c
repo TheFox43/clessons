@@ -36,7 +36,7 @@ int main(){
     DataArray * x = createArray(len);
     for(int i=0; i<x->length; i++) x->data[i] = values[i];
     DataArray * gauss = Gaussfn(*x);
-    double check = 0.00;
+    double check = 0.0;
     
     printf("Mean value: %lf\n", mean(*x));
     printf("Standard sample deviation: %lf\n", stddev(*x));
