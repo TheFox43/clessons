@@ -65,7 +65,7 @@ int main(){
     srand(time(NULL));
     for(int i=0; i<len; i++){
         x->data[i] = rand() % 100;
-        y->data[i] = x->data[i] * (rand() % 10) + rand() % 10 + 5; //I don't know how to use it lol
+        y->data[i] = x->data[i] * (rand() / RAND_MAX + 8) + rand() % 10; //I don't know how to use it actually
     }
 
     //Function call and results printing
