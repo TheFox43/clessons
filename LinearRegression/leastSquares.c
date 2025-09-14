@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> 
 #include <math.h>
 #include <time.h>
 
@@ -61,12 +61,25 @@ int main(){
     //Creating random data
     int len = 100;
     DataArray * x = createArray(len);
+    DataArray * y = createArray(len);
     srand(time(NULL));
-    for(int i=0; i<len; i++) x->data[i] = rand()/RAND_MAX;
-    freeArray(x);
+    for(int i=0; i<len; i++){
+        x->data[i] = rand()%100;
+        y->data[i] = x->data[i] * 3.5 + rand()%3;
+    }
 
     RegressionOutput * interpolation = initializeOutput();
+    * interpolation = LeastSquares(* x, * y);
     printf("Testing initialized values: %lf\n", interpolation->A);
+    printf("Testing initialized values: %lf\n", interpolation->B);
+    printf("Testing initialized values: %lf\n", interpolation->sigmaA);
+    printf("Testing initialized values: %lf\n", interpolation->sigmaB);
+    printf("Testing initialized values: %lf\n", interpolation->sigmay);
+    
+    //Freeing allocated memory
+    freeArray(x);
+    freeArray(y);
+    freeRegressionOutput(interpolation);
 
     return 0;
 }
