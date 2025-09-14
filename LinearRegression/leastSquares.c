@@ -72,6 +72,7 @@ int main(){
     return 0;
 }
 
+//Linear regression function, least squares method
 RegressionOutput LeastSquares(DataArray x, DataArray y){
     //Equal lengths check
     if(x.length != y.length){
