@@ -5,7 +5,7 @@
 //Structured array with its length
 typedef struct{
     int length;
-    double *data;
+    double * data;
 } DataArray;
 //Allocating memory with its length parameter
 DataArray * createArray(int len){
