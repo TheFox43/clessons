@@ -56,7 +56,7 @@ void freeRegressionOutput(RegressionOutput * results){
 }
 
 //Function prototypes
-RegressionOutput LinearRegression(DataArray x, DataArray y);
+RegressionOutput LeastSquares(DataArray x, DataArray y);
 
 int main(){
     //Creating random data
@@ -72,7 +72,7 @@ int main(){
     return 0;
 }
 
-RegressionOutput LinearRegression(DataArray x, DataArray y){
+RegressionOutput LeastSquares(DataArray x, DataArray y){
     //Equal lengths check
     if(x.length != y.length){
         printf("Different dimension arrays: incompatible datas to interpolate\n");
