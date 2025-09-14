@@ -64,17 +64,18 @@ int main(){
     DataArray * y = createArray(len);
     srand(time(NULL));
     for(int i=0; i<len; i++){
-        x->data[i] = rand()%100;
-        y->data[i] = x->data[i] * 3.5 + rand()%3;
+        x->data[i] = rand() % 100;
+        y->data[i] = x->data[i] * (rand() % 10) + rand() % 10 + 5; //I don't know how to use it lol
     }
 
+    //Function call and results printing
     RegressionOutput * interpolation = initializeOutput();
     * interpolation = LeastSquares(* x, * y);
-    printf("Testing initialized values: %lf\n", interpolation->A);
-    printf("Testing initialized values: %lf\n", interpolation->B);
-    printf("Testing initialized values: %lf\n", interpolation->sigmaA);
-    printf("Testing initialized values: %lf\n", interpolation->sigmaB);
-    printf("Testing initialized values: %lf\n", interpolation->sigmay);
+    printf("Testing, A: %lf\n", interpolation->A);
+    printf("Testing, B: %lf\n", interpolation->B);
+    printf("Testing, sigmaA: %lf\n", interpolation->sigmaA);
+    printf("Testing, sigmaB: %lf\n", interpolation->sigmaB);
+    printf("Testing, sigmay: %lf\n", interpolation->sigmay);
     
     //Freeing allocated memory
     freeArray(x);
