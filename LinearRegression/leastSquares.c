@@ -31,6 +31,7 @@ typedef struct{
     double sigmaA;
     double sigmaB;
     double sigmay;
+    double r;
 } RegressionOutput;
 //Initialization of the struct
 RegressionOutput * initializeOutput(){
@@ -40,6 +41,7 @@ RegressionOutput * initializeOutput(){
     results->sigmaA = 0.0;
     results->sigmaB = 0.0;
     results->sigmay = 0.0;
+    results->r = 0.0;
 
     return results;
 }
@@ -51,6 +53,7 @@ void freeRegressionOutput(RegressionOutput * results){
     results->sigmaA = 0.0;
     results->sigmaB = 0.0;
     results->sigmay = 0.0;
+    results->r = 0.0;
     free(results);
 }
 
@@ -76,6 +79,7 @@ int main(){
     printf("Testing, sigmaA: %lf\n", interpolation->sigmaA);
     printf("Testing, sigmaB: %lf\n", interpolation->sigmaB);
     printf("Testing, sigmay: %lf\n", interpolation->sigmay);
+    printf("Testing, r: %lf\n", interpolation->r);
     
     //Freeing allocated memory
     freeArray(x);
@@ -103,6 +107,7 @@ RegressionOutput LeastSquares(DataArray x, DataArray y){
     double sumx = 0.0;
     double sumx2 = 0.0;
     double sumy = 0.0;
+    double sumy2 = 0.0;
     double sumxy = 0.0;
 
     //Calculations
@@ -110,6 +115,7 @@ RegressionOutput LeastSquares(DataArray x, DataArray y){
         sumx += x.data[i];
         sumx2 += x.data[i] * x.data[i];
         sumy += y.data[i];
+        sumy2 += y.data[i] * y.data[i];
         sumxy += x.data[i] * y.data[i];
     }
     double Delta = N * sumx2 - sumx * sumx;
@@ -124,6 +130,22 @@ RegressionOutput LeastSquares(DataArray x, DataArray y){
     results->sigmay = sqrt( temp / (N - 2) );
     results->sigmaA = results->sigmay * sqrt(sumx2 / Delta);
     results->sigmaB = results->sigmay * sqrt(N / Delta);
+
+    //Covariance and linear correlation coefficient r
+    double xmean = sumx / N;
+    double ymean = sumy / N;
+    double diffxy = 0.0;
+    double diffx2 = 0.0;
+    double diffy2 = 0.0;
+    for(int i=0; i<N; i++){
+        diffxy += (x.data[i] - xmean) * (y.data[i] - ymean);
+        diffx2 += (x.data[i] - xmean) * (x.data[i] - xmean);
+        diffy2 += (y.data[i] - ymean) * (y.data[i] - ymean);
+    }
+    double sigmaxy = diffxy / N;
+    double sigmax2 = diffx2 / N;
+    double sigmay2 = diffy2 / N;
+    results->r = sigmaxy / (sqrt(sigmax2) * sqrt(sigmay2));
 
     return * results;
 }
